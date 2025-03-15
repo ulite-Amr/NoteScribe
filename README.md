@@ -15,13 +15,13 @@
 NoteScribe is a modern note-taking app built with **Jetpack Compose** that redefines personal organization. Designed with a clean Material You interface, it offers intuitive writing experiences while maintaining powerful organizational features.
 
 ## Features
-- ✅ **Basic Note Creation**: Quickly create notes with rich text formatting
-- ✅ **Local Storage**: Automatic saving to device storage
+- 🔄 **Basic Note Creation**: Quickly create notes with rich text formatting
+- 🔄 **Local Storage**: Automatic saving to device storage
 - 🔄 **Cloud Sync** (In Progress): Sync notes via Firebase (Coming v1.1)
 - 🔄 **Categories & Tags** (Planned): Organize notes with custom taxonomies
-- ✅ **Search Functionality**: Find notes using keywords
+- 🔄 **Search Functionality**: Find notes using keywords
 - 🔄 **Collaboration** (Planned): Share notes with other users
-- ✅ **Dark/Light Theme**: Automatic system theme detection
+- 🔄 **Dark/Light Theme**: Automatic system theme detection
 - 🔄 **Voice Notes** (Planned): Record and attach voice memos
 
 ## Known Issues
@@ -33,20 +33,10 @@ The app is currently in **beta**. Report bugs or suggestions on our [Issues Trac
 
 [![Download NoteScribe](https://img.shields.io/badge/Download-NoteScribe-blue?style=for-the-badge)](https://github.com/ulite-Amr/NoteScribe/releases/latest)
 
-## Contributing
-We welcome contributions! To get started:
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a Pull Request
-
-Please adhere to our [Code of Conduct](https://github.com/ulite-Amr/NoteScribe/blob/main/CODE_OF_CONDUCT.md).
-
 ## Acknowledgements
 Special thanks to:
 - [JetBrains](https://www.jetbrains.com/) for Android Studio
-- [Firebase](https://firebase.google.com/) team for backend services
+- [Kotlin](https://kotlinlang.org/) team for Kotlin
 - [Material Design](https://m3.material.io/) team for UI inspiration
 
 ## License
