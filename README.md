@@ -2,6 +2,7 @@
 
 ![Banner](/images/notescribe-banner.png "NoteScribe Banner")
 
+[![StandWithPalestine](https://raw.githubusercontent.com/karim-eg/StandWithPalestine/main/assets/palestine_badge.svg)](https://github.com/karim-eg/StandWithPalestine)
 [![Latest release](https://img.shields.io/github/v/release/ulite-Amr/NoteScribe?include_prereleases&label=latest%20release&style=for-the-badge)](https://github.com/ulite-Amr/NoteScribe/releases/latest)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ulite-Amr/NoteScribe?style=for-the-badge)
 ![Test and Build](https://img.shields.io/github/actions/workflow/status/ulite-Amr/NoteScribe/android.yml?style=for-the-badge&logo=github)
@@ -9,9 +10,7 @@
 [![LICENSE](https://img.shields.io/github/license/ulite-Amr/NoteScribe?color=blue&style=for-the-badge)](https://github.com/ulite-Amr/NoteScribe/blob/main/LICENSE)
 
 ## Tech Stack
-![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84?logo=android-studio&logoColor=white)
-![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white)
-![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-000000?logo=jetpackcompose&logoColor=white)
+[![Technologies](https://skillicons.dev/icons?i=kotlin,androidstudio,jetpackcompose,gradle&perline=12)](https://skillicons.dev)
 </div>
 
 # NoteScribe
