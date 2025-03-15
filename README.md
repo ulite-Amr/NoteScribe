@@ -3,7 +3,7 @@
 <img alt="API" src="https://img.shields.io/badge/Api%2026+-7B4DD2?logo=android&logoColor=white&style=for-the-badge"/>
 <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-8A5ED5?logo=kotlin&logoColor=white&style=for-the-badge"/>
 <img alt="material" src="https://custom-icon-badges.demolab.com/badge/material%20you-9D6BEC?style=for-the-badge&logoColor=white&logo=material-you"/>
-<img alt="jetpack compose" src="https://img.shields.io/badge/Jetpack%20Compose-7B4DD2?logo=android&logoColor=white&style=for-the-badge">
+<img alt="jetpack compose" src="https://img.shields.io/badge/Jetpack%20Compose-7B4DD2?logo=jetpackcompose&logoColor=white&style=for-the-badge">
 
 <br>
 <br>
