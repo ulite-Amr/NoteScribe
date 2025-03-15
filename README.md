@@ -29,18 +29,18 @@
 NoteScribe is a modern note-taking app built with **Jetpack Compose** that redefines personal organization. Designed with a clean Material You interface, it offers intuitive writing experiences while maintaining powerful organizational features.
 
 ## Features
-- ✅ **Basic Note Creation**: Quickly create notes with rich text formatting
-- ✅ **Local Storage**: Automatic saving to device storage
-- 🚧 **Categories & Tags**: Organize notes with custom taxonomies (In Progress)
-- ✅ **Search Functionality**: Find notes using keywords
-- 📅 **Collaboration**: Share notes with other users (Planned)
-- ✅ **Dark/Light Theme**: Automatic system theme detection
-- 📅 **Voice Notes**: Record and attach voice memos (Planned)
-- 📅 **Image Attachments**: Attach images to notes (Planned)
-- 🚧 **PDF Export**: Export notes as PDF files (In Development)
-- 🚧 **Cloud Sync**: Synchronize notes across devices (In Development)
-- ✅ **Markdown Support**: Write notes using Markdown syntax
-- ✅ **Ad Free**: No ads, no trackers
+- [ ] **Basic Note Creation**: Quickly create notes with rich text formatting
+- [ ] **Local Storage**: Automatic saving to device storage
+- [ ] **Categories & Tags**: Organize notes with custom taxonomies (In Progress)
+- [ ] **Search Functionality**: Find notes using keywords
+- [ ] **Collaboration**: Share notes with other users (Planned)
+- [ ] **Dark/Light Theme**: Automatic system theme detection
+- [ ] **Voice Notes**: Record and attach voice memos (Planned)
+- [ ] **Image Attachments**: Attach images to notes (Planned)
+- [ ] **PDF Export**: Export notes as PDF files (In Development)
+- [ ] **Cloud Sync**: Synchronize notes across devices (In Development)
+- [ ] **Markdown Support**: Write notes using Markdown syntax
+- [x] **Ad Free**: No ads, no trackers
 
 ## Known Issues
 1. Limited export options (PDF export in development)
