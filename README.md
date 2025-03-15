@@ -11,20 +11,17 @@
     <img src="https://img.shields.io/github/license/ulite-Amr/NoteScribe.svg?color=7B4DD2&style=for-the-badge&logo=gitbook&logoColor=white&labelColor=2A0944" alt="License">
 </a>
 <a href="https://github.com/ulite-Amr/NoteScribe/releases/latest">
-    <img src="https://img.shields.io/github/v/release/ulite-Amr/NoteScribe?color=8A5ED5&style=for-the-badge&logo=pkgsrc&logoColor=white&labelColor=2A0944" alt="GitHub release">
+    <img src="https://img.shields.io/github/v/release/ulite-Amr/NoteScribe?color=7B4DD2&style=for-the-badge&logo=pkgsrc&logoColor=white&labelColor=2A0944" alt="GitHub release">
 </a>
 <a href="https://github.com/ulite-Amr/NoteScribe/stargazers">
-    <img src="https://img.shields.io/github/stars/ulite-Amr/NoteScribe.svg?color=9D6BEC&style=for-the-badge&logo=apachespark&logoColor=white&labelColor=2A0944" alt="Stars Count">
+    <img src="https://img.shields.io/github/stars/ulite-Amr/NoteScribe.svg?color=7B4DD2&style=for-the-badge&logo=apachespark&logoColor=white&labelColor=2A0944" alt="Stars Count">
 </a>
 <a href="https://github.com/ulite-Amr/NoteScribe/releases">
     <img src="https://img.shields.io/github/downloads/ulite-Amr/NoteScribe/total.svg?color=7B4DD2&style=for-the-badge&labelColor=2A0944" alt="Download Counts">
 </a> 
 <a href="https://github.com/ulite-Amr/NoteScribe/actions/workflows/android.yml">
-    <img alt="Workflow status" src="https://img.shields.io/github/actions/workflow/status/ulite-Amr/NoteScribe/android.yml?color=8A5ED5&style=for-the-badge&logo=githubactions&logoColor=white&labelColor=2A0944&label=CI">
+    <img alt="Workflow status" src="https://img.shields.io/github/actions/workflow/status/ulite-Amr/NoteScribe/android.yml?color=2A0944&style=for-the-badge&logo=githubactions&logoColor=white&labelColor=2A0944&label=CI">
 </a>
-<a href="https://ko-fi.com/yourkofiaccount">
-    <img src="https://img.shields.io/badge/Ko--fi-9D6BEC?color=7B4DD2&style=for-the-badge&logo=ko-fi&logoColor=white&labelColor=2A0944" alt="Ko-Fi">
-</a>   
 
 </div>
 # NoteScribe
