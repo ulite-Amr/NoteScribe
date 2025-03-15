@@ -8,6 +8,10 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=for-the-badge)](https://github.com/ulite-Amr/NoteScribe/blob/main/CODE_OF_CONDUCT.md)
 [![LICENSE](https://img.shields.io/github/license/ulite-Amr/NoteScribe?color=blue&style=for-the-badge)](https://github.com/ulite-Amr/NoteScribe/blob/main/LICENSE)
 
+## Tech Stack
+![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84?logo=android-studio&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-000000?logo=jetpackcompose&logoColor=white)
 </div>
 
 # NoteScribe
