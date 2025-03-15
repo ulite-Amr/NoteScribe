@@ -10,7 +10,8 @@
 [![LICENSE](https://img.shields.io/github/license/ulite-Amr/NoteScribe?color=blue&style=for-the-badge)](https://github.com/ulite-Amr/NoteScribe/blob/main/LICENSE)
 
 ## Tech Stack
-[![Technologies](https://skillicons.dev/icons?i=kotlin,androidstudio,jetpackcompose,gradle&perline=12)](https://skillicons.dev)
+[![Technologies](https://skillicons.dev/icons?i=kotlin,androidstudio,gradle&perline=12)](https://skillicons.dev)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?logo=jetpack-compose&logoColor=white)
 </div>
 
 # NoteScribe
