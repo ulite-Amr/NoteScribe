@@ -16,7 +16,7 @@ import com.ulite.notescribe.ui.theme.NoteScribeTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         setContent {
             NoteScribeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
