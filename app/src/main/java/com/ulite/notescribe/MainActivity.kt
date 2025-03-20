@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             NoteScribeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "Android J",
                         modifier = Modifier.padding(innerPadding)
 
                     )
