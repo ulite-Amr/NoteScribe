@@ -19,14 +19,16 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 HomeScreen(
                     onNavigateBack = {
-                        // التعامل مع حدث الرجوع
 
                     },
                     onSearchClicked = {
-                        // التعامل مع حدث البحث
+
                     },
                     onMenuClicked = {
-                        // التعامل مع حدث القائمة
+
+                    },
+                    onFabClicked = {
+
                     }
                 )
             }

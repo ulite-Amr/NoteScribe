@@ -4,9 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,12 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ulite.notescribe.ui.components.NotesTopAppBar
 import com.ulite.notescribe.ui.components.AppBarAction
+import com.ulite.notescribe.ui.components.ExtendedFAB
+
 
 @Composable
 fun HomeScreen(
     onNavigateBack: () -> Unit,
     onSearchClicked: () -> Unit,
-    onMenuClicked: () -> Unit
+    onMenuClicked: () -> Unit,
+    onFabClicked: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -40,6 +41,14 @@ fun HomeScreen(
                     )
                 )
             )
+        },
+        floatingActionButton = {
+            ExtendedFAB (
+                icon  = Icons.Default.Edit,
+                text = "Create New Note",
+            ){
+                onFabClicked()
+            }
         }
     ) { innerPadding ->
         Column(
