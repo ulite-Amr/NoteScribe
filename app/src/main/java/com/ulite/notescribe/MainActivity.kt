@@ -20,16 +20,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             NoteScribeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android J",
-                        modifier = Modifier.padding(innerPadding)
-
-                    )
+                   HomeScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
 }
+
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
