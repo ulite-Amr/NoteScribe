@@ -3,35 +3,34 @@ package com.ulite.notescribe
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
+import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.ulite.notescribe.ui.screens.HomeScreen
 import com.ulite.notescribe.ui.theme.AppTheme
 
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: HomeViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val uiState by viewModel.uiState.collectAsState()
+
             AppTheme {
                 HomeScreen(
-                    onNavigateBack = {
-
-                    },
-                    onSearchClicked = {
-
-                    },
-                    onMenuClicked = {
-
-                    },
-                    onFabClicked = {
-
-                    }
+                    uiState = uiState,
+                    onEvent = { event -> viewModel.handleEvent(event) }
                 )
             }
         }
     }
 }
+
+
+
+
+
+
