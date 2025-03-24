@@ -40,7 +40,7 @@ NoteScribe is a modern note-taking app built with **Jetpack Compose** that redef
 - [ ] **Image Attachments**: Attach images to notes (Planned)
 - [ ] **PDF Export**: Export notes as PDF files (In Development)
 - [ ] **Cloud Sync**: Synchronize notes across devices (In Development)
-- [x] **Markdown Support**: Write notes using Markdown syntax
+- [ ] **Markdown Support**: Write notes using Markdown syntax
 - [x] **Ad Free**: No ads, no trackers
 
 ## Known Issues
