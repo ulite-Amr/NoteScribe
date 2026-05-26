@@ -20,6 +20,14 @@ import org.gradle.kotlin.dsl.dependencies
  */
 class ComposeConventionPlugin : Plugin<Project> {
 
+    /**
+     * Configures the given Gradle Project for Jetpack Compose support.
+     *
+     * Applies the Kotlin Compose compiler plugin and registers Compose, Material3, tooling, and
+     * navigation dependencies required by modules that use Jetpack Compose.
+     *
+     * @param target The Gradle Project to configure.
+     */
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
