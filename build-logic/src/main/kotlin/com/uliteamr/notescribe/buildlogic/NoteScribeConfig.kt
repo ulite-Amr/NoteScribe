@@ -52,8 +52,8 @@ object NoteScribeConfig {
      * Generates a semantic version name string based on the current version constants.
      *
      * Example outputs:
-     * - Default: "1.0.0"
-     * - With suffix: "1.0.0-alpha01"
+     * - Default: "0.1.0"
+     * - With suffix: "0.1.0-alpha01"
      *
      * @param major The major version number. Defaults to [MAJOR].
      * @param minor The minor version number. Defaults to [MINOR].

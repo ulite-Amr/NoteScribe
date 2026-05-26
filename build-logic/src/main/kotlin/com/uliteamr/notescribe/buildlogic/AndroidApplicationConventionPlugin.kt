@@ -1,6 +1,7 @@
 package com.uliteamr.notescribe.buildlogic
 
 import com.android.build.api.dsl.ApplicationExtension
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -106,15 +107,26 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                         }
                         val propFile = File(propPath)
                         if (propFile.exists()) {
-                            val properties = Properties().also { it.load(propFile.inputStream()) }
-                            keyAlias = properties.getProperty("keyAlias")
-                            keyPassword = properties.getProperty("keyPassword")
+                            val properties = Properties()
+                            propFile.inputStream().use { properties.load(it) }
+                            keyAlias = properties.getProperty("keyAlias").also {
+                                if (it.isNullOrBlank()) throw GradleException("keyAlias is missing in $propPath")
+                            }
+                            keyPassword = properties.getProperty("keyPassword").also {
+                                if (it.isNullOrBlank()) throw GradleException("keyPassword is missing in $propPath")
+                            }
                             storeFile = if (isCI) {
                                 File("/tmp/release.keystore")
                             } else {
-                                File(properties.getProperty("storeFile"))
+                                val path = properties.getProperty("storeFile")
+                                if (path.isNullOrBlank()) throw GradleException("storeFile is missing in $propPath")
+                                val file = File(path)
+                                if (!file.exists() || !file.canRead()) throw GradleException("storeFile not found or not readable: $path")
+                                file
                             }
-                            storePassword = properties.getProperty("storePassword")
+                            storePassword = properties.getProperty("storePassword").also {
+                                if (it.isNullOrBlank()) throw GradleException("storePassword is missing in $propPath")
+                            }
                         } else {
                             println("Sign properties not found at $propPath — release signing will fail if required.")
                         }
