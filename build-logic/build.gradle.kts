@@ -22,5 +22,5 @@ gradlePlugin {
 dependencies {
     implementation(libs.android.gradle)
     implementation(libs.kotlin.gradle)
-    implementation("org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:2.2.10")
+    implementation(libs.kotlin.compose.gradle)
 }

@@ -2,6 +2,7 @@ package com.uliteamr.notescribe.buildlogic
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 
 /**
@@ -23,15 +24,19 @@ class ComposeConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
+            val libs = rootProject.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+
             dependencies {
-                add("implementation", platform("androidx.compose:compose-bom:2026.02.01"))
+                val bom = libs.findLibrary("androidx-compose-bom").get()
+                add("implementation", platform(bom))
                 add("implementation", "androidx.compose.ui:ui")
                 add("implementation", "androidx.compose.ui:ui-graphics")
                 add("implementation", "androidx.compose.ui:ui-tooling-preview")
                 add("implementation", "androidx.compose.material3:material3")
                 add("debugImplementation", "androidx.compose.ui:ui-tooling")
                 add("debugImplementation", "androidx.compose.ui:ui-test-manifest")
-                add("implementation", "androidx.navigation:navigation-compose:2.9.8")
+                val navCompose = libs.findLibrary("androidx-navigation-compose").get()
+                add("implementation", navCompose)
             }
         }
     }
