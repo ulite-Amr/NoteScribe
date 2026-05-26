@@ -1,0 +1,7 @@
+[versions]
+agp = "9.2.1"
+kotlin = "2.2.10"
+
+[libraries]
+android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
