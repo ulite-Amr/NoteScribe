@@ -15,6 +15,14 @@ import org.gradle.api.JavaVersion
  * individually in [AndroidApplicationConventionPlugin] and
  * [AndroidLibraryConventionPlugin].
  */
+/**
+ * Applies shared Android SDK and Java compiler defaults to the receiver `CommonExtension`.
+ *
+ * Sets the project's `compileSdk` to `NoteScribeConfig.COMPILE_SDK` and aligns Java
+ * compilation source and target compatibility to `JavaVersion.VERSION_21`.
+ *
+ * @receiver The `CommonExtension` instance to configure.
+ */
 internal fun CommonExtension.configureAndroidDefaults() {
     compileSdk = NoteScribeConfig.COMPILE_SDK
 

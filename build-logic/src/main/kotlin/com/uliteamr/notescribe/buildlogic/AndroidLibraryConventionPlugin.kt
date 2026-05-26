@@ -21,6 +21,16 @@ import org.gradle.kotlin.dsl.configure
  */
 class AndroidLibraryConventionPlugin : Plugin<Project> {
 
+    /**
+     * Applies the Android library plugin to the given project and configures its Android
+     * LibraryExtension with shared defaults for library modules.
+     *
+     * The configuration enables Jetpack Compose, sets the module namespace to
+     * NoteScribeConfig.SHARED_NAMESPACE, applies common Android defaults, and sets the
+     * minimum SDK to NoteScribeConfig.MIN_SDK.
+     *
+     * @param target The Gradle Project to apply the Android library plugin and configuration to.
+     */
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
