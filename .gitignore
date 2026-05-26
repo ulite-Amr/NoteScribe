@@ -1,16 +1,24 @@
+# Android & Gradle
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+.gradle/
 local.properties
+/build
+**/build/
+/captures
+.externalNativeBuild/
+.cxx/
+
+# IntelliJ / Android Studio
 .idea/
+
+# macOS
+.DS_Store
+
+# Rust
+target/
+Cargo.lock
+
+# Keys & secrets
+*.jks
+*.keystore
+google-services.json
