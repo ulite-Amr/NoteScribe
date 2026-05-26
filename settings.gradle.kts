@@ -24,3 +24,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "NoteScribe"
 include(":app")
+
+includeBuild("build-logic")
