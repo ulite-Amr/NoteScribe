@@ -1,6 +1,5 @@
-package com.uliteamr.notescribe.ui.theme
+package com.uliteamr.notescribe.presentation.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

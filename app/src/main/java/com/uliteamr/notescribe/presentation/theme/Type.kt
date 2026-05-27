@@ -1,4 +1,4 @@
-package com.uliteamr.notescribe.ui.theme
+package com.uliteamr.notescribe.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

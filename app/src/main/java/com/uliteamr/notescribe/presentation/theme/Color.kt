@@ -1,4 +1,4 @@
-package com.uliteamr.notescribe.ui.theme
+package com.uliteamr.notescribe.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
