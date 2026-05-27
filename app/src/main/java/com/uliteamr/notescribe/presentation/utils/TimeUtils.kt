@@ -19,30 +19,30 @@ private const val MILLIS_PER_DAY = 86_400_000L
 private const val MILLIS_PER_HOUR = 3_600_000L
 private const val MILLIS_PER_MINUTE = 60_000L
 
-private val noteFormatter by lazy { SimpleDateFormat(PATTERN_NOTE_DATE, Locale.getDefault()) }
-private val dateFormatter by lazy { SimpleDateFormat(PATTERN_DATE, Locale.getDefault()) }
-private val timeFormatter by lazy { SimpleDateFormat(PATTERN_TIME, Locale.getDefault()) }
+private val noteFormatter = ThreadLocal.withInitial { SimpleDateFormat(PATTERN_NOTE_DATE, Locale.getDefault()) }
+private val dateFormatter = ThreadLocal.withInitial { SimpleDateFormat(PATTERN_DATE, Locale.getDefault()) }
+private val timeFormatter = ThreadLocal.withInitial { SimpleDateFormat(PATTERN_TIME, Locale.getDefault()) }
 
 /**
  * Formats [timestamp] as a calendar date string.
  *
  * Example output: `"Jan 15, 2025"`
  */
-fun formatDate(timestamp: Long): String = dateFormatter.format(Date(timestamp))
+fun formatDate(timestamp: Long): String = dateFormatter.get().format(Date(timestamp))
 
 /**
  * Formats [timestamp] as a time-only string.
  *
  * Example output: `"02:30 PM"`
  */
-fun formatTime(timestamp: Long): String = timeFormatter.format(Date(timestamp))
+fun formatTime(timestamp: Long): String = timeFormatter.get().format(Date(timestamp))
 
 /**
  * Formats [timestamp] used on note cards.
  *
  * Example output: `"Jan 15, 2025 · 02:30 PM"`
  */
-fun formatNoteDate(timestamp: Long): String = noteFormatter.format(Date(timestamp))
+fun formatNoteDate(timestamp: Long): String = noteFormatter.get().format(Date(timestamp))
 
 /**
  * Returns a human-readable relative description of [timestamp] compared to now.
