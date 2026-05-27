@@ -5,7 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,10 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -38,18 +35,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.uliteamr.notescribe.presentation.icons.FavoriteOutline
 import com.uliteamr.notescribe.presentation.icons.PushPin
+import com.uliteamr.notescribe.presentation.theme.NoteScribeTheme
 import com.uliteamr.notescribe.presentation.utils.formatNoteDate
-
-private val FADE_ANIM_SPEC = tween<Float>(150)
-private val STATUS_ICON_SIZE = 14.dp
-private val STATUS_ICON_SPACING = 4.dp
-private val TAG_SPACING = 6.dp
-private val NOTE_CARD_ELEVATION = 2.dp
-private val NOTE_CARD_RADIUS = 12.dp
-private val NOTE_ICON_SIZE = 40.dp
-private val NOTE_PADDING = 12.dp
-private val HORIZONTAL_CARD_MARGIN = 8.dp
-private val VERTICAL_CARD_MARGIN = 4.dp
 
 /** UI representation of a note's status flags. */
 data class NoteStatus(
@@ -58,22 +45,22 @@ data class NoteStatus(
 )
 
 /**
- * Circular avatar showing either a custom icon or the first letter of the note title.
+ * Rounded avatar showing either a custom icon or the first letter of the note title.
  *
  * @param letter First character to display when [icon] is null.
  * @param icon Optional drawable resource ID; shown instead of [letter].
- * @param size Diameter of the circle.
+ * @param size Width and height of the avatar box.
  */
 @Composable
 fun NoteIcon(
     letter: String,
     icon: Int? = null,
-    size: Dp = NOTE_ICON_SIZE,
+    size: Dp = 40.dp,
 ) {
     Box(
         modifier = Modifier
             .size(size)
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center,
     ) {
@@ -97,33 +84,33 @@ fun NoteIcon(
 /** Small animated row of status icons (pin / favorite) for a note. */
 @Composable
 fun NoteStatusIcons(status: NoteStatus) {
-    Row(horizontalArrangement = Arrangement.spacedBy(STATUS_ICON_SPACING)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         AnimatedVisibility(
             visible = status.isPinned,
-            enter = fadeIn(FADE_ANIM_SPEC),
-            exit = fadeOut(FADE_ANIM_SPEC),
+            enter = fadeIn(tween(150)),
+            exit = fadeOut(tween(150)),
         ) {
             Icon(
                 imageVector = PushPin,
                 contentDescription = "Pinned",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .size(STATUS_ICON_SIZE)
+                    .size(14.dp)
                     .semantics { contentDescription = "Pinned note" },
             )
         }
 
         AnimatedVisibility(
             visible = status.isFavorite,
-            enter = fadeIn(FADE_ANIM_SPEC),
-            exit = fadeOut(FADE_ANIM_SPEC),
+            enter = fadeIn(tween(150)),
+            exit = fadeOut(tween(150)),
         ) {
             Icon(
                 imageVector = FavoriteOutline,
                 contentDescription = "Favorite",
                 tint = MaterialTheme.colorScheme.error,
                 modifier = Modifier
-                    .size(STATUS_ICON_SIZE)
+                    .size(14.dp)
                     .semantics { contentDescription = "Favorite note" },
             )
         }
@@ -136,7 +123,7 @@ fun NoteTags(tags: List<String>) {
     if (tags.isEmpty()) return
 
     FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(TAG_SPACING),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         tags.forEach { tag ->
             Surface(
@@ -176,21 +163,19 @@ fun NoteItem(
     icon: Int? = null,
     onClick: () -> Unit,
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = HORIZONTAL_CARD_MARGIN, vertical = VERTICAL_CARD_MARGIN)
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(NOTE_CARD_RADIUS),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        elevation = CardDefaults.cardElevation(NOTE_CARD_ELEVATION),
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier.padding(NOTE_PADDING),
+            modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             NoteIcon(letter = letter, icon = icon)
-            Spacer(modifier = Modifier.width(NOTE_PADDING))
+            Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Row(
@@ -217,7 +202,7 @@ fun NoteItem(
                 Text(
                     text = formatNoteDate(timestamp),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -227,12 +212,14 @@ fun NoteItem(
 @Preview(showBackground = true)
 @Composable
 fun NoteItemPreview() {
-    NoteItem(
-        letter = "N",
-        title = "Meeting Notes",
-        timestamp = System.currentTimeMillis(),
-        tags = listOf("Work", "Project"),
-        status = NoteStatus(isPinned = true, isFavorite = true),
-        onClick = {},
-    )
+    NoteScribeTheme(true) {
+        NoteItem(
+            letter = "N",
+            title = "Meeting Notes",
+            timestamp = System.currentTimeMillis(),
+            tags = listOf("Work", "Project"),
+            status = NoteStatus(isPinned = true, isFavorite = true),
+            onClick = {},
+        )
+    }
 }
