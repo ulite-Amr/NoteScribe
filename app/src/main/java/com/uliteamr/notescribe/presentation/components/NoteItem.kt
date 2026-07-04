@@ -285,7 +285,7 @@ private fun NoteCardProgress(
     completed: Int,
     total: Int,
 ) {
-    val progress = if (total > 0) completed.toFloat() / total.toFloat() else 0f
+    val progress = if (total > 0) (completed.toFloat() / total.toFloat()).coerceIn(0f, 1f) else 0f
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
