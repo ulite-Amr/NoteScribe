@@ -24,7 +24,7 @@ object NoteScribeConfig {
     /**
      * The compile SDK version for all Android modules.
      */
-    const val COMPILE_SDK = 36
+    const val COMPILE_SDK = 37
 
     /**
      * The minimum SDK version supported by the application.
@@ -34,7 +34,7 @@ object NoteScribeConfig {
     /**
      * The target SDK version for the application.
      */
-    const val TARGET_SDK = 36
+    const val TARGET_SDK = 37
 
     // --- Versioning Constants ---
 
