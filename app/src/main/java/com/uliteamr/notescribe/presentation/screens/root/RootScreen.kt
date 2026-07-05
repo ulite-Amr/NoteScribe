@@ -34,16 +34,16 @@ fun RootLayout(modifier: Modifier = Modifier) {
                     },
                     optionsMenuSlot = { closeMenu ->
                         Text(
-                            text = "Workspace",
+                            text = stringResource(R.string.workspace),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                         )
                         ContextMenuItem(
-                            label = "Settings",
+                            label = stringResource(R.string.settings),
                             onClick = { closeMenu() },
-                            isCritical = true
+                            isCritical = false
                         )
                     }
                 )
