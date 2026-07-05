@@ -1,0 +1,3 @@
+[defaults.bindings.kotlin]
+package_name = "com.uliteamr.notescribe.core"
+cdylib_name = "notescribe_core"
