@@ -162,7 +162,7 @@ fun NoteCard(
 // ---------------------------------------------------------------------------
 
 /**
- * Top header row of the card containing:
+ * Top header row of the card containing:1
  * - A coloured category indicator bar followed by the category name.
  * - Optional favourite and pin icons on the trailing edge.
  *
@@ -253,7 +253,7 @@ private fun CategoryLabel(
  * Extracted so that every action icon shares identical size and padding
  * without repeating [Modifier] boilerplate at each call site.
  *
- * @param iconResId          Drawable resource identifier for the icon.
+ * @param icon   Drawable resource identifier for the icon.
  * @param contentDescription Accessibility label forwarded to [Icon].
  * @param tint               Colour applied to the icon.
  */
