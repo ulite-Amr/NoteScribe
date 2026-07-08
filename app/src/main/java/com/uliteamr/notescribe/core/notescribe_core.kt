@@ -3,7 +3,7 @@
 
 @file:Suppress("NAME_SHADOWING")
 
-package com.uliteamr.notescribe.core
+package uniffi.notescribe_core
 
 // Common helper code.
 //

@@ -5,29 +5,8 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 
-/**
- * Convention plugin that configures Jetpack Compose for a module.
- *
- * Applies the Kotlin Compose compiler plugin and adds the standard
- * Compose BOM and UI dependencies to the module's classpath.
- *
- * Usage in a module's build.gradle.kts:
- * ```
- * plugins {
- *     id("notescribe.compose")
- * }
- * ```
- */
 class ComposeConventionPlugin : Plugin<Project> {
 
-    /**
-     * Configures the given Gradle Project for Jetpack Compose support.
-     *
-     * Applies the Kotlin Compose compiler plugin and registers Compose, Material3, tooling, and
-     * navigation dependencies required by modules that use Jetpack Compose.
-     *
-     * @param target The Gradle Project to configure.
-     */
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply("org.jetbrains.kotlin.plugin.compose")

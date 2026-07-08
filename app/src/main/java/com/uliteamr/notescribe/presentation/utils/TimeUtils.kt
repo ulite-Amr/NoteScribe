@@ -6,13 +6,8 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-/** Readable format for standalone dates: "Jan 15, 2025". */
 private const val PATTERN_DATE = "MMM dd, yyyy"
-
-/** Readable format for timestamps shown on notes: "Jan 15, 2025 · 02:30 PM". */
 private const val PATTERN_NOTE_DATE = "MMM dd, yyyy · hh:mm a"
-
-/** Short time-only format: "02:30 PM". */
 private const val PATTERN_TIME = "hh:mm a"
 
 private const val MILLIS_PER_DAY = 86_400_000L
@@ -23,35 +18,12 @@ private val noteFormatter = ThreadLocal.withInitial { SimpleDateFormat(PATTERN_N
 private val dateFormatter = ThreadLocal.withInitial { SimpleDateFormat(PATTERN_DATE, Locale.getDefault()) }
 private val timeFormatter = ThreadLocal.withInitial { SimpleDateFormat(PATTERN_TIME, Locale.getDefault()) }
 
-/**
- * Formats [timestamp] as a calendar date string.
- *
- * Example output: `"Jan 15, 2025"`
- */
 fun formatDate(timestamp: Long): String = dateFormatter.get().format(Date(timestamp))
 
-/**
- * Formats [timestamp] as a time-only string.
- *
- * Example output: `"02:30 PM"`
- */
 fun formatTime(timestamp: Long): String = timeFormatter.get().format(Date(timestamp))
 
-/**
- * Formats [timestamp] used on note cards.
- *
- * Example output: `"Jan 15, 2025 · 02:30 PM"`
- */
 fun formatNoteDate(timestamp: Long): String = noteFormatter.get().format(Date(timestamp))
 
-/**
- * Returns a human-readable relative description of [timestamp] compared to now.
- *
- * - Same day: `"Today at 02:30 PM"`
- * - Yesterday: `"Yesterday at 02:30 PM"`
- * - This week: `"Monday at 02:30 PM"`
- * - Older: formatted date (e.g. `"Jan 15, 2025"`)
- */
 fun formatRelative(timestamp: Long): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
@@ -69,11 +41,6 @@ fun formatRelative(timestamp: Long): String {
     }
 }
 
-/**
- * Returns a concise human-readable duration from [timestamp] until now.
- *
- * Examples: `"Just now"`, `"5m ago"`, `"3h ago"`, `"2d ago"`, `"Jan 15, 2025"`
- */
 fun formatDuration(timestamp: Long): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp

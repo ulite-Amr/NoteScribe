@@ -22,3 +22,8 @@ thiserror = "1"
 
 [build-dependencies]
 uniffi = { version = "0.32", features = ["build"] }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+opt-level = "z"

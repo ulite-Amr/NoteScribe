@@ -1,9 +1,12 @@
 package com.uliteamr.notescribe.presentation.screens.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
 
@@ -12,7 +15,12 @@ class HomeViewModel : ViewModel() {
 
     fun onEvent(event: HomeEvent) {
         when (event) {
-            HomeEvent.OnAddNoteClick -> { /* TODO */ }
+            HomeEvent.OnAddNoteClick -> onAddNoteClick()
+        }
+    }
+
+    private fun onAddNoteClick() {
+        viewModelScope.launch(Dispatchers.IO) {
         }
     }
 }

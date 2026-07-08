@@ -1,5 +1,5 @@
 package com.uliteamr.notescribe.presentation.screens.home
 
-sealed class HomeEvent {
-    data object OnAddNoteClick : HomeEvent()
+sealed interface HomeEvent {
+    data object OnAddNoteClick : HomeEvent
 }

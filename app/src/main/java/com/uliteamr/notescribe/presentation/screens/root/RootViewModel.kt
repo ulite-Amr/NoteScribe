@@ -13,15 +13,9 @@ class RootViewModel : ViewModel() {
 
     fun onEvent(event: RootEvent) {
         when (event) {
-            RootEvent.OnNavigateBack -> { /* handled by navController */ }
+            RootEvent.OnNavigateBack -> {}
+            is RootEvent.UpdateTopBarTitle -> _state.update { it.copy(topBarTitle = event.title) }
+            is RootEvent.UpdateCurrentRoute -> _state.update { it.copy(currentRoute = event.route) }
         }
-    }
-
-    fun updateTopBarTitle(title: String) {
-        _state.update { it.copy(topBarTitle = title) }
-    }
-
-    fun updateCurrentRoute(route: String?) {
-        _state.update { it.copy(currentRoute = route) }
     }
 }
