@@ -8,37 +8,8 @@ import org.gradle.kotlin.dsl.configure
 import java.io.File
 import java.util.Properties
 
-/**
- * Pre-configured convention plugin for Android application modules.
- *
- * Applies the Android application plugin and configures:
- * - Common Android settings (SDK versions, Java 21) via [configureAndroidDefaults].
- * - Application-specific metadata (namespace, applicationId, targetSdk).
- * - Versioning (versionCode, versionName) from [NoteScribeConfig].
- * - Automated release signing using `~/.sign/sign.properties` (or `/tmp/sign.properties` in CI).
- * - Debug signing using `keystore/debug.keystore`.
- * - Product flavors for ABI architectures (universal, arm64, armeabi, x86, x86_64).
- * - Release and debug build types with appropriate defaults.
- *
- * Usage in a module's build.gradle.kts:
- * ```
- * plugins {
- *     id("notescribe.android.application")
- * }
- * ```
- */
 class AndroidApplicationConventionPlugin : Plugin<Project> {
 
-    /**
-     * Configures the given Gradle project as an Android application module and applies project-wide Android conventions.
-     *
-     * Enables build config and Jetpack Compose, sets namespace and defaultConfig values from NoteScribeConfig, declares an "abi" flavor dimension with five product flavors (universal, arm64, armeabi, x86, x86_64) each exposing an `ARCHITECTURE` BuildConfig field and appropriate NDK ABI filters, and registers signing configurations and build types:
-     * - Release signing reads properties from CI (/tmp) or a local ~/.sign/sign.properties file when present; otherwise it logs a warning.
-     * - A debug signing config uses a bundled debug keystore.
-     * - The release build type enables code shrinking/minification and ProGuard; the debug build type applies suffixes and uses the debug signing config.
-     *
-     * @param target The Gradle Project to configure.
-     */
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply("com.android.application")

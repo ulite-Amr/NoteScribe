@@ -1,0 +1,36 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "lsp": {
+    "rust": {
+      "command": ["rust-analyzer"],
+      "extensions": [".rs"]
+    },
+    "kotlin": {
+      "command": ["kotlin-language-server"],
+      "extensions": [".kt", ".kts"]
+    }
+  },
+  "mcp": {
+    "github": {
+      "type": "local",
+      "command": ["gh", "mcp"],
+      "enabled": true
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": false
+    }
+  },
+  "formatter": true,
+  "instructions": ["AGENTS.md"],
+  "permission": {
+    "bash": {
+      "git *": "allow",
+      "./gradlew *": "allow",
+      "gradle *": "allow",
+      "cargo *": "allow",
+      "*": "ask"
+    }
+  }
+}

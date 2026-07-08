@@ -40,19 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.uliteamr.notescribe.presentation.icons.MoreVert
 
-/**
- * A highly customizable and reusable top app bar component that features a vertical gradient background.
- * It uses a slot-based design pattern to accept dynamic content for navigation, actions, and sub-bar elements.
- *
- * @param modifier The [Modifier] to be applied to the root container.
- * @param scrollBehavior The [TopAppBarScrollBehavior] to control the bar's expansion or collapse states.
- * @param themes The list of [Color] objects utilized to draw the vertical background gradient brush.
- * @param navigationSlot The optional composable block positioned at the start of the top app bar.
- * @param headerSlot The optional composable block representing the title or central layout of the bar.
- * @param actionsSlot Additional functional elements placed horizontally before the options dropdown menu.
- * @param optionsMenuSlot The dynamic content drawn inside the pre-styled modern dropdown menu sheet.
- * @param footerSlot A flexible lower container suitable for hosting structural elements like page tabs.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
@@ -95,12 +82,6 @@ fun TopBar(
     }
 }
 
-/**
- * A private custom wrapper that manages the visibility state and visual aesthetics of the contextual action menu.
- * It enforces a high-radius rounded corner shape to provide an expressive interface layout.
- *
- * @param content The structural layout components to render inside the opened popup window.
- */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun AdaptiveActionSheet(
@@ -139,17 +120,6 @@ private fun AdaptiveActionSheet(
     }
 }
 
-/**
- * An expressive extension item layout confined directly to the [ColumnScope] of a dropdown interface.
- * It completely eliminates external dependencies or signatures by leveraging standard layout primitives.
- *
- * @param label The semantic text layout presented within the custom row block.
- * @param onClick The functional action sequence executed upon selecting this interactive row.
- * @param modifier Custom [Modifier] adjustments applied directly to the item container wrapper.
- * @param isCritical Marks the option as destructive, altering typography colors to indicate severe impact.
- * @param customFont Optional custom [FontFamily] applied to the internal descriptive typography layer.
- * @param iconSlot Dynamic composable block responsible for rendering image graphics seamlessly.
- */
 @Composable
 fun ColumnScope.ContextMenuItem(
     label: String,
