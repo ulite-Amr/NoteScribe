@@ -86,7 +86,7 @@ cargo test                                 # Run Rust tests
 - **NO hardcoded `dp`/`sp` for text** — use `MaterialTheme.typography`.
 - **NO hardcoded colors** — use `MaterialTheme.colorScheme`.
 - **Package must match project path** — `com.uliteamr.notescribe.*`, never `com.example.*`.
-- **NO KDoc on composables or production code.**
+- **NO KDoc on composables or production code** (exception: public API functions in Rust/Kotlin per General rules above).**
 - **NO `@Suppress` without justification.**
 
 ## Rust core conventions

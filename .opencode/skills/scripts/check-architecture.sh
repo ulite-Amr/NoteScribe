@@ -48,7 +48,7 @@ for screen_dir in "$SRC_DIR/presentation/screens"/*/; do
 done
 
 # 4. Check for any .kt files outside allowed directories
-echo "  → Checking for misplaced files..."
+echo "  → Checking for required entry point..."
 if [ -f "$SRC_DIR/MainActivity.kt" ]; then
   echo "  ✅ MainActivity.kt exists"
 else

@@ -5,4 +5,5 @@ data class HomeState(
     val error: String? = null,
     val success: String? = null,
     val isEmpty: Boolean = true,
+    val isNavigatingToCreate: Boolean = false,
 )

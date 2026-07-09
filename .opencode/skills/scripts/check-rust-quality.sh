@@ -24,14 +24,34 @@ fi
 
 # 3. Check for unsafe without SAFETY comment
 echo "  → Checking unsafe usage..."
-UNSAFE_COUNT=$(grep -rn 'unsafe' notescribe-core/src/ \
-  --include='*.rs' \
-  | grep -v '// SAFETY:' \
-  | grep -v 'Cargo.toml' \
-  | wc -l)
+UNSAFE_COUNT=$(python3 -c "
+import os
+count = 0
+for root, dirs, files in os.walk('notescribe-core/src'):
+    for f in files:
+        if f.endswith('.rs'):
+            path = os.path.join(root, f)
+            with open(path) as fh:
+                lines = fh.readlines()
+            for i, line in enumerate(lines):
+                if 'unsafe' in line and '// SAFETY:' not in line:
+                    if i == 0 or '// SAFETY:' not in lines[i - 1]:
+                        count += 1
+print(count)
+")
 if [ "$UNSAFE_COUNT" -gt 0 ]; then
   echo "❌ FAIL: $UNSAFE_COUNT unsafe blocks without // SAFETY:"
-  grep -rn 'unsafe' notescribe-core/src/ --include='*.rs' | grep -v '// SAFETY:'
+  grep -rn 'unsafe' notescribe-core/src/ --include='*.rs' | while IFS=: read -r file num rest; do
+    if [[ "$rest" != *"// SAFETY:"* ]]; then
+      if [[ "$num" -gt 1 ]]; then
+        prev=$(sed -n "$((num - 1))p" "$file")
+        if [[ "$prev" == *"// SAFETY:"* ]]; then
+          continue
+        fi
+      fi
+      echo "$file:$num:$rest"
+    fi
+  done
   exit 1
 fi
 
