@@ -36,10 +36,8 @@ const KEY_LEN: usize = 32;
 ```rust
 use zeroize::Zeroizing;
 
-fn derive_key(password: String, salt: &[u8; SALT_LEN]) -> Result<[u8; KEY_LEN], NoteScribeError> {
-    let password = Zeroizing::new(password.into_bytes());
-    let mut key = [0u8; KEY_LEN];
-
+fn derive_key(password: &str, salt: &[u8]) -> Result<Zeroizing<Vec<u8>>, NoteScribeError> {
+    let mut key = Zeroizing::new(vec![0u8; KEY_LEN]);
     let argon2 = argon2::Argon2::new(
         argon2::Algorithm::Argon2id,
         argon2::Version::V0x13,
@@ -49,7 +47,7 @@ fn derive_key(password: String, salt: &[u8; SALT_LEN]) -> Result<[u8; KEY_LEN], 
     );
 
     argon2
-        .hash_password_into(&password, salt, &mut key)
+        .hash_password_into(password.as_bytes(), salt, &mut key)
         .map_err(|e| NoteScribeError::Encryption {
             msg: format!("Key derivation failed: {e}"),
         })?;
@@ -63,30 +61,22 @@ fn derive_key(password: String, salt: &[u8; SALT_LEN]) -> Result<[u8; KEY_LEN], 
 🔴 **`decrypt()` returns `WrongPassword` if authentication fails.** AES-GCM authenticates ciphertext; a failed authentication tag check means either the wrong password was used or data is corrupted. Do NOT distinguish between these cases to avoid oracle attacks.
 
 ```rust
-pub fn decrypt(encrypted: &[u8], password: String) -> Result<Vec<u8>, NoteScribeError> {
-    if encrypted.len() < SALT_LEN + NONCE_LEN + 1 {
+pub fn decrypt(data: &[u8], password: &str) -> Result<Vec<u8>, NoteScribeError> {
+    if data.len() < SALT_LEN + NONCE_LEN {
         return Err(NoteScribeError::Encryption {
-            msg: "Encrypted data too short".into(),
+            msg: "Invalid backup file".into(),
         });
     }
 
-    let (salt, rest) = encrypted.split_at(SALT_LEN);
+    let (salt, rest) = data.split_at(SALT_LEN);
     let (nonce_bytes, ciphertext) = rest.split_at(NONCE_LEN);
 
-    let salt: [u8; SALT_LEN] = salt.try_into().map_err(|_| NoteScribeError::Encryption {
-        msg: "Invalid salt length".into(),
-    })?;
-    let nonce: [u8; NONCE_LEN] = nonce_bytes.try_into().map_err(|_| NoteScribeError::Encryption {
-        msg: "Invalid nonce length".into(),
-    })?;
-
-    let key = derive_key(password, &salt)?;
-
+    let key = derive_key(password, salt)?;
     let cipher = Aes256Gcm::new_from_slice(&key).map_err(|e| NoteScribeError::Encryption {
         msg: format!("Failed to create cipher: {e}"),
     })?;
 
-    let nonce = Nonce::from_slice(&nonce);
+    let nonce = Nonce::from_slice(nonce_bytes);
     let plaintext = cipher
         .decrypt(nonce, ciphertext)
         .map_err(|_| NoteScribeError::WrongPassword)?;
@@ -98,22 +88,11 @@ pub fn decrypt(encrypted: &[u8], password: String) -> Result<Vec<u8>, NoteScribe
 🔴 **`encrypt()` and `decrypt()` are pure functions.** No state, no side effects, no self. They are deterministic given the same inputs (except for random salt/nonce). They do not touch the database, filesystem, or network.
 
 ```rust
-pub fn encrypt(plaintext: &[u8], password: String) -> Result<Vec<u8>, NoteScribeError> {
-    let salt = {
-        let mut s = [0u8; SALT_LEN];
-        getrandom::getrandom(&mut s).map_err(|e| NoteScribeError::Encryption {
-            msg: format!("Failed to generate salt: {e}"),
-        })?;
-        s
-    };
-
-    let nonce_bytes = {
-        let mut n = [0u8; NONCE_LEN];
-        getrandom::getrandom(&mut n).map_err(|e| NoteScribeError::Encryption {
-            msg: format!("Failed to generate nonce: {e}"),
-        })?;
-        n
-    };
+pub fn encrypt(plaintext: &[u8], password: &str) -> Result<Vec<u8>, NoteScribeError> {
+    let mut salt = [0u8; SALT_LEN];
+    let mut nonce_bytes = [0u8; NONCE_LEN];
+    rand::thread_rng().fill_bytes(&mut salt);
+    rand::thread_rng().fill_bytes(&mut nonce_bytes);
 
     let key = derive_key(password, &salt)?;
     let cipher = Aes256Gcm::new_from_slice(&key).map_err(|e| NoteScribeError::Encryption {
@@ -127,12 +106,12 @@ pub fn encrypt(plaintext: &[u8], password: String) -> Result<Vec<u8>, NoteScribe
             msg: format!("Encryption failed: {e}"),
         })?;
 
-    let mut output = Vec::with_capacity(SALT_LEN + NONCE_LEN + ciphertext.len());
-    output.extend_from_slice(&salt);
-    output.extend_from_slice(&nonce_bytes);
-    output.extend_from_slice(&ciphertext);
+    let mut result = Vec::with_capacity(SALT_LEN + NONCE_LEN + ciphertext.len());
+    result.extend_from_slice(&salt);
+    result.extend_from_slice(&nonce_bytes);
+    result.extend_from_slice(&ciphertext);
 
-    Ok(output)
+    Ok(result)
 }
 ```
 
@@ -151,22 +130,21 @@ println!("Decrypted {} bytes", plaintext.len());
 ## Full Module Template
 
 ```rust
-// notescribe-core/src/crypto.rs
-use aes_gcm::{Aes256Gcm, Key, Nonce};
-use aes_gcm::aead::{Aead, OsRng};
+use aes_gcm::aead::Aead;
+use aes_gcm::{Aes256Gcm, KeyInit, Nonce};
 use argon2::Argon2;
+use rand::RngCore;
 use zeroize::Zeroizing;
+
+use crate::error::NoteScribeError;
 
 const SALT_LEN: usize = 16;
 const NONCE_LEN: usize = 12;
 const KEY_LEN: usize = 32;
 
-/// Derive a 256-bit key from a password using Argon2id.
-/// Uses OWASP-recommended parameters: m=19456, t=2, p=1.
-fn derive_key(password: String, salt: &[u8; SALT_LEN]) -> Result<[u8; KEY_LEN], NoteScribeError> {
-    let password = Zeroizing::new(password.into_bytes());
-    let mut key = [0u8; KEY_LEN];
-    let argon2 = Argon2::new(
+fn derive_key(password: &str, salt: &[u8]) -> Result<Zeroizing<Vec<u8>>, NoteScribeError> {
+    let mut key = Zeroizing::new(vec![0u8; KEY_LEN]);
+    let argon2 = argon2::Argon2::new(
         argon2::Algorithm::Argon2id,
         argon2::Version::V0x13,
         argon2::Params::new(19456, 2, 1, None).map_err(|e| NoteScribeError::Encryption {
@@ -174,67 +152,55 @@ fn derive_key(password: String, salt: &[u8; SALT_LEN]) -> Result<[u8; KEY_LEN], 
         })?,
     );
     argon2
-        .hash_password_into(&password, salt, &mut key)
+        .hash_password_into(password.as_bytes(), salt, &mut key)
         .map_err(|e| NoteScribeError::Encryption {
             msg: format!("Key derivation failed: {e}"),
         })?;
     Ok(key)
 }
 
-pub fn encrypt(plaintext: &[u8], password: String) -> Result<Vec<u8>, NoteScribeError> {
-    let salt = {
-        let mut s = [0u8; SALT_LEN];
-        getrandom::getrandom(&mut s).map_err(|e| NoteScribeError::Encryption {
-            msg: format!("Failed to generate salt: {e}"),
-        })?;
-        s
-    };
-    let nonce_bytes = {
-        let mut n = [0u8; NONCE_LEN];
-        getrandom::getrandom(&mut n).map_err(|e| NoteScribeError::Encryption {
-            msg: format!("Failed to generate nonce: {e}"),
-        })?;
-        n
-    };
+pub fn encrypt(plaintext: &[u8], password: &str) -> Result<Vec<u8>, NoteScribeError> {
+    let mut salt = [0u8; SALT_LEN];
+    let mut nonce_bytes = [0u8; NONCE_LEN];
+    rand::thread_rng().fill_bytes(&mut salt);
+    rand::thread_rng().fill_bytes(&mut nonce_bytes);
+
     let key = derive_key(password, &salt)?;
-    let cipher = Aes256Gcm::new_from_slice(&key).map_err(|e| NoteScribeError::Encryption {
-        msg: format!("Failed to create cipher: {e}"),
-    })?;
+    let cipher = Aes256Gcm::new_from_slice(&key)
+        .map_err(|e| NoteScribeError::Encryption { msg: e.to_string() })?;
     let nonce = Nonce::from_slice(&nonce_bytes);
+
     let ciphertext = cipher
         .encrypt(nonce, plaintext)
-        .map_err(|e| NoteScribeError::Encryption {
-            msg: format!("Encryption failed: {e}"),
-        })?;
-    let mut output = Vec::with_capacity(SALT_LEN + NONCE_LEN + ciphertext.len());
-    output.extend_from_slice(&salt);
-    output.extend_from_slice(&nonce_bytes);
-    output.extend_from_slice(&ciphertext);
-    Ok(output)
+        .map_err(|e| NoteScribeError::Encryption { msg: e.to_string() })?;
+
+    let mut result = Vec::with_capacity(SALT_LEN + NONCE_LEN + ciphertext.len());
+    result.extend_from_slice(&salt);
+    result.extend_from_slice(&nonce_bytes);
+    result.extend_from_slice(&ciphertext);
+
+    Ok(result)
 }
 
-pub fn decrypt(encrypted: &[u8], password: String) -> Result<Vec<u8>, NoteScribeError> {
-    if encrypted.len() < SALT_LEN + NONCE_LEN + 1 {
+pub fn decrypt(data: &[u8], password: &str) -> Result<Vec<u8>, NoteScribeError> {
+    if data.len() < SALT_LEN + NONCE_LEN {
         return Err(NoteScribeError::Encryption {
-            msg: "Encrypted data too short".into(),
+            msg: "Invalid backup file".to_string(),
         });
     }
-    let (salt, rest) = encrypted.split_at(SALT_LEN);
+
+    let (salt, rest) = data.split_at(SALT_LEN);
     let (nonce_bytes, ciphertext) = rest.split_at(NONCE_LEN);
-    let salt: [u8; SALT_LEN] = salt.try_into().map_err(|_| NoteScribeError::Encryption {
-        msg: "Invalid salt length".into(),
-    })?;
-    let nonce: [u8; NONCE_LEN] = nonce_bytes.try_into().map_err(|_| NoteScribeError::Encryption {
-        msg: "Invalid nonce length".into(),
-    })?;
-    let key = derive_key(password, &salt)?;
-    let cipher = Aes256Gcm::new_from_slice(&key).map_err(|e| NoteScribeError::Encryption {
-        msg: format!("Failed to create cipher: {e}"),
-    })?;
-    let nonce = Nonce::from_slice(&nonce);
+
+    let key = derive_key(password, salt)?;
+    let cipher = Aes256Gcm::new_from_slice(&key)
+        .map_err(|e| NoteScribeError::Encryption { msg: e.to_string() })?;
+    let nonce = Nonce::from_slice(nonce_bytes);
+
     let plaintext = cipher
         .decrypt(nonce, ciphertext)
         .map_err(|_| NoteScribeError::WrongPassword)?;
+
     Ok(plaintext)
 }
 
@@ -245,8 +211,8 @@ mod tests {
     #[test]
     fn test_encrypt_decrypt_roundtrip() {
         let plaintext = b"Hello, NoteScribe!";
-        let password = "correct-horse-battery-staple".into();
-        let encrypted = encrypt(plaintext, password.clone()).unwrap();
+        let password = "correct-horse-battery-staple";
+        let encrypted = encrypt(plaintext, password).unwrap();
         let decrypted = decrypt(&encrypted, password).unwrap();
         assert_eq!(decrypted, plaintext);
     }
@@ -254,14 +220,14 @@ mod tests {
     #[test]
     fn test_decrypt_wrong_password_fails() {
         let plaintext = b"Secret note content";
-        let encrypted = encrypt(plaintext, "correct-password".into()).unwrap();
-        let result = decrypt(&encrypted, "wrong-password".into());
+        let encrypted = encrypt(plaintext, "correct-password").unwrap();
+        let result = decrypt(&encrypted, "wrong-password");
         assert!(matches!(result, Err(NoteScribeError::WrongPassword)));
     }
 
     #[test]
     fn test_decrypt_truncated_data_fails() {
-        let result = decrypt(&[0u8; 10], "password".into());
+        let result = decrypt(&[0u8; 10], "password");
         assert!(matches!(result, Err(NoteScribeError::Encryption { .. })));
     }
 }

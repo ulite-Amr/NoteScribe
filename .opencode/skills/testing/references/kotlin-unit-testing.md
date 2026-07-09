@@ -48,7 +48,7 @@ class HomeViewModelTest {
             NoteListItem(id = "1", title = "Test", isPinned = false, createdAt = 1000L, updatedAt = 1000L)
         )
         val states = mutableListOf<HomeState>()
-        val job = launch(UnconfinedTestDispatcher()) {
+        val job = backgroundScope.launch {
             viewModel.state.collect { states.add(it) }
         }
         viewModel.onEvent(HomeEvent.LoadNotes)

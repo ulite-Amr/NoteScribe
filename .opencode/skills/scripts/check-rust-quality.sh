@@ -26,12 +26,12 @@ fi
 echo "  → Checking unsafe usage..."
 UNSAFE_COUNT=$(grep -rn 'unsafe' notescribe-core/src/ \
   --include='*.rs' \
+  -B1 \
   | grep -v '// SAFETY:' \
-  | grep -v 'Cargo.toml' \
-  | wc -l)
+  | grep -c 'unsafe')
 if [ "$UNSAFE_COUNT" -gt 0 ]; then
   echo "❌ FAIL: $UNSAFE_COUNT unsafe blocks without // SAFETY:"
-  grep -rn 'unsafe' notescribe-core/src/ --include='*.rs' | grep -v '// SAFETY:'
+  grep -rn 'unsafe' notescribe-core/src/ --include='*.rs' -B1 | grep -v '// SAFETY:' | grep 'unsafe'
   exit 1
 fi
 

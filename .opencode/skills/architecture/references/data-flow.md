@@ -14,7 +14,7 @@ HomeScreen renders
   -> HomeViewModel.state (StateFlow)
     -> LaunchedEffect triggers HomeViewModel.onEvent(HomeEvent.LoadNotes)
       -> viewModelScope.launch(Dispatchers.IO) {
-          val notes = notescribe_core.getNotes(database)
+          val notes = database.getNotes()
           _state.update { it.copy(notes = notes, loading = false) }
         }
 ```
@@ -34,7 +34,7 @@ User taps FAB
           viewModelScope.launch(Dispatchers.IO) {
             _state.update { it.copy(loading = true) }
             try {
-              notescribe_core.createNote(database, title, content)
+              database.createNote(title, content)
               _state.update {
                 it.copy(loading = false, success = "Note created")
               }

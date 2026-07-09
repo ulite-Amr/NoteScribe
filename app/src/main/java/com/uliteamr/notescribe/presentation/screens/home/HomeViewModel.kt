@@ -20,7 +20,6 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun onAddNoteClick() {
-        viewModelScope.launch(Dispatchers.IO) {
-        }
+        _state.update { it.copy(isNavigatingToCreate = true) }
     }
 }

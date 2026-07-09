@@ -52,10 +52,14 @@ pub fn create_note(&self, title: String, content: String) -> Result<Note, NoteSc
 
 ## Step 3: Build & Regenerate Bindings
 
-**Command:** `cargo build` in `notescribe-core/`
+**Command:** `./gradlew :app:assembleDebug` (or `cargo build` in `notescribe-core/` for Rust-only)
 
-- This regenerates `core/notescribe_core.kt`.
-- 🔴 NEVER manually edit the generated file.
+- The Gradle pipeline handles cross-compilation and binding regeneration:
+  - `cargoBuildHost` builds the Rust library for the host platform.
+  - `generateUniFFIBindings` generates Kotlin bindings from the compiled `.so`.
+  - `copyGeneratedBindings` places the generated `.kt` into the Android source tree.
+- `cargo build` alone only compiles Rust — it does NOT regenerate the Kotlin bindings.
+- 🔴 NEVER manually edit the generated file (`notescribe_core.kt`).
 - 🔴 If build fails, fix Rust first before touching Kotlin.
 - Run `cargo test` to verify Rust tests pass.
 

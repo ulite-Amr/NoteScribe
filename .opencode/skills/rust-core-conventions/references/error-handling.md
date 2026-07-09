@@ -1,26 +1,32 @@
 # Error Handling Conventions
 
-> `NoteScribeError` enum with `thiserror` — the single error type for all Rust core operations.
+> `NoteScribeError` enum with `uniffi::Error` — the single error type for all Rust core operations.
 
 ## Error Enum Definition
 
 ```rust
-use thiserror::Error;
+use std::fmt;
 
-#[derive(uniffi::Enum, Debug, Error)]
+#[derive(Debug, uniffi::Error)]
 pub enum NoteScribeError {
-    #[error("Database error: {msg}")]
     Database { msg: String },
-
-    #[error("Encryption error: {msg}")]
     Encryption { msg: String },
-
-    #[error("Wrong password")]
     WrongPassword,
-
-    #[error("I/O error: {msg}")]
     Io { msg: String },
 }
+
+impl fmt::Display for NoteScribeError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            NoteScribeError::Database { msg } => write!(f, "Database error: {msg}"),
+            NoteScribeError::Encryption { msg } => write!(f, "Encryption error: {msg}"),
+            NoteScribeError::WrongPassword => write!(f, "Wrong password"),
+            NoteScribeError::Io { msg } => write!(f, "IO error: {msg}"),
+        }
+    }
+}
+
+impl std::error::Error for NoteScribeError {}
 ```
 
 ## Blocking Rules

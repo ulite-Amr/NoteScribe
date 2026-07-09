@@ -32,7 +32,7 @@ fun RootLayout(modifier: Modifier = Modifier) {
     ) { childModifier ->
         when (state.currentRoute) {
             "home" -> HomeScreen(modifier = childModifier)
-            else -> HomeScreen(modifier = childModifier)
+            else -> UnknownRouteScreen(modifier = childModifier, route = state.currentRoute)
         }
     }
 }

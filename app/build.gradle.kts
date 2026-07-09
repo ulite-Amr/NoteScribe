@@ -23,19 +23,25 @@ val sdkDir = if (localPropsFile.exists()) {
 val ndkPath = "$sdkDir/ndk/$ndkVersion"
 
 tasks.register<Exec>("cargoBuildHost") {
+    inputs.dir(rustProjectDir.resolve("src"))
+    inputs.file(rustProjectDir.resolve("Cargo.toml"))
+    outputs.file(rustProjectDir.resolve("target/release/libnotescribe_core.so"))
     workingDir(rustProjectDir)
     commandLine("cargo", "build", "--release")
 }
 
-abiToTarget.forEach { (abi, target) ->
+abiToTarget.forEach { (abi, _) ->
     tasks.register<Exec>("cargoBuildRelease_$abi") {
+        inputs.dir(rustProjectDir.resolve("src"))
+        inputs.file(rustProjectDir.resolve("Cargo.toml"))
+        outputs.dir(layout.buildDirectory.get().asFile.resolve("jniLibs/$abi"))
         workingDir(rustProjectDir)
         environment("ANDROID_NDK_HOME", ndkPath)
         commandLine(
             "cargo", "ndk",
             "-t", abi,
             "-o", layout.buildDirectory.get().asFile.resolve("jniLibs/$abi").absolutePath,
-            "--", "build", "--release"
+            "build", "--release"
         )
     }
 }
@@ -48,8 +54,10 @@ tasks.register("cargoBuildAll") {
 
 tasks.register<Exec>("generateUniFFIBindings") {
     dependsOn("cargoBuildHost")
-    workingDir(rustProjectDir)
+    inputs.file(rustProjectDir.resolve("target/release/libnotescribe_core.so"))
     val outputDir = layout.buildDirectory.get().asFile.resolve("generated/uniffi")
+    outputs.dir(outputDir)
+    workingDir(rustProjectDir)
     outputDir.mkdirs()
     commandLine(
         "uniffi-bindgen", "generate",
@@ -61,7 +69,7 @@ tasks.register<Exec>("generateUniFFIBindings") {
 
 tasks.register<Copy>("copyGeneratedBindings") {
     dependsOn("generateUniFFIBindings")
-    from(layout.buildDirectory.dir("generated/uniffi/uniffi/notescribe_core")) {
+    from(layout.buildDirectory.dir("generated/uniffi/com/uliteamr/notescribe/core")) {
         include("*.kt")
     }
     into("src/main/java/com/uliteamr/notescribe/core")

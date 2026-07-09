@@ -189,20 +189,22 @@ pub fn archive_notes(&self, ids: Vec<i64>) -> Result<i64, NoteScribeError> {
         msg: format!("Failed to start transaction: {e}"),
     })?;
 
+    let mut count = 0i64;
     for id in &ids {
-        tx.execute(
+        let rows = tx.execute(
             "UPDATE notes SET is_archived = 1 WHERE id = ?1",
             params![id],
         ).map_err(|e| NoteScribeError::Database {
             msg: format!("Failed to archive note: {e}"),
         })?;
+        count += rows as i64;
     }
 
     tx.commit().map_err(|e| NoteScribeError::Database {
         msg: format!("Failed to commit archive transaction: {e}"),
     })?;
 
-    Ok(ids.len() as i64)
+    Ok(count)
 }
 ```
 

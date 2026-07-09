@@ -65,7 +65,10 @@ fi
 # 6. Run Android lint if available
 if command -v ./gradlew &> /dev/null; then
   echo "  → Running Android lint..."
-  ./gradlew lint 2>&1 | tail -10 || true
+  if ! ./gradlew lint 2>&1 | tail -10; then
+    echo "❌ FAIL: Android lint found issues"
+    exit 1
+  fi
 fi
 
 echo "✅ Kotlin quality checks passed"
