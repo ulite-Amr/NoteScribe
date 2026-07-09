@@ -16,10 +16,15 @@ class HomeViewModel : ViewModel() {
     fun onEvent(event: HomeEvent) {
         when (event) {
             HomeEvent.OnAddNoteClick -> onAddNoteClick()
+            HomeEvent.OnNavigatedToCreate -> onNavigatedToCreate()
         }
     }
 
     private fun onAddNoteClick() {
         _state.update { it.copy(isNavigatingToCreate = true) }
+    }
+
+    private fun onNavigatedToCreate() {
+        _state.update { it.copy(isNavigatingToCreate = false) }
     }
 }

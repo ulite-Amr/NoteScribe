@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.uliteamr.notescribe.presentation.icons.Add
 
@@ -19,7 +22,17 @@ import com.uliteamr.notescribe.presentation.icons.Add
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(),
+    onNavigateToCreateNote: () -> Unit = {},
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.isNavigatingToCreate) {
+        if (state.isNavigatingToCreate) {
+            onNavigateToCreateNote()
+            viewModel.onEvent(HomeEvent.OnNavigatedToCreate)
+        }
+    }
+
     Box(modifier = modifier.fillMaxSize()) {
         FloatingActionButton(
             onClick = { viewModel.onEvent(HomeEvent.OnAddNoteClick) },
